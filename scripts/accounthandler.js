@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -60,13 +60,29 @@ export async function login(email, password) {
     }
 }
 
-// Logout Function
-export async function logout() {
-    try {
-        await signOut(auth);
+// Logout function
+export function logout() {
+    signOut(auth).then(() => {
         console.log("User logged out");
-    } catch (error) {
-        console.error("Logout error:", error.message);
-        throw error;
-    }
+        window.location.href = "/index.html"; // Redirect to the main page
+    }).catch((error) => {
+        console.error("Logout error:", error);
+    });
 }
+
+// Function to check if user is authenticated
+export function checkAuth(callback) {
+    onAuthStateChanged(auth, (user) => {
+        callback(user);
+    });
+}
+
+
+// use this on sites we dont want users that arent logged in on
+// import { checkAuth } from './firebase-config.js';
+
+// checkAuth((user) => {
+//     if (!user) {
+//         window.location.href = "/index.html"; // Redirect to login if not logged in
+//     }
+// });

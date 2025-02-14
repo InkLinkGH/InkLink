@@ -12,7 +12,9 @@
         </form>
 
         <script type="module">
-            import { checkAuth, logout } from './firebase-config.js';
+            import { checkAuth, logout } from "./scripts/accounthandler.js";
+
+
 
             checkAuth((user) => {
                 if (!user) {

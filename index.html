@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <title>LOGIN PAGE</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white shadow-lg rounded-lg p-6 max-w-md w-full">
+        <div class="flex justify-between mb-4">
+            <button id="showLogin" class="text-indigo-500 font-bold">Login</button>
+            <button id="showSignup" class="text-gray-500">Sign Up</button>
+        </div>
+        
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-4">
+            <input type="email" id="loginEmail" placeholder="Email" class="w-full p-2 border rounded-md">
+            <input type="password" id="loginPassword" placeholder="Password" class="w-full p-2 border rounded-md">
+            <button type="submit" class="w-full bg-indigo-500 text-white py-2 rounded-md">Login</button>
+        </form>
+        
+        <!-- Signup Form (Hidden by Default) -->
+        <form id="signupForm" class="space-y-4 hidden">
+            <input type="email" id="signupEmail" placeholder="Email" class="w-full p-2 border rounded-md">
+            <input type="password" id="signupPassword" placeholder="Password" class="w-full p-2 border rounded-md">
+            <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-md">Sign Up</button>
+        </form>
+    </div>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        import { getAnalytics } from "firebase/analytics";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+        apiKey: "AIzaSyASqpQV1ZbAReT0uvdnD7FLlVYrq44h1Qc",
+        authDomain: "inklink-37b44.firebaseapp.com",
+        databaseURL: "https://inklink-37b44-default-rtdb.firebaseio.com",
+        projectId: "inklink-37b44",
+        storageBucket: "inklink-37b44.firebasestorage.app",
+        messagingSenderId: "1045754527122",
+        appId: "1:1045754527122:web:89eb567b86164f139a954b",
+        measurementId: "G-VDK4YY132Z"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Toggle Forms
+        document.getElementById('showLogin').addEventListener('click', () => {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('showLogin').classList.add('text-indigo-500', 'font-bold');
+            document.getElementById('showSignup').classList.remove('text-indigo-500', 'font-bold');
+        });
+
+        document.getElementById('showSignup').addEventListener('click', () => {
+            document.getElementById('signupForm').classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('showSignup').classList.add('text-indigo-500', 'font-bold');
+            document.getElementById('showLogin').classList.remove('text-indigo-500', 'font-bold');
+        });
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                alert('Login successful');
+                window.location.href = "/dashboard.html";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // Signup
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                alert('Account created successfully');
+                window.location.href = "/dashboard.html";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>

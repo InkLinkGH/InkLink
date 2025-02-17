@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
+// Firebase configuration
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,10 +21,10 @@ const firebaseConfig = {
 
 console.log("Firebase initialized:", app);
 
-const auth = firebase.auth();
-const database = firebase.database();
-const app = firebase.app();
-const analytics = firebase.analytics(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+const analytics = getAnalytics(app);
 // Function to Sign Up
 function signUp(email, password) {
   auth.createUserWithEmailAndPassword(email, password)

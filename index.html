@@ -57,7 +57,7 @@
             </fieldset>
         </form>
 
-        <script type="module">
+        <script type="module" src="./scripts/accounthandler.js">
             import { login, checkAuth } from "./scripts/accounthandler.js"; // Import functions
 
             checkAuth((user) => {
@@ -73,14 +73,7 @@
             const password = document.getElementById("password").value;
 
             // Attempt to log in
-            try {
-                await login(email, password); // Ensure login returns a successful response
-            } catch (error) {
-                console.error("Login failed:", error.message);
-                alert("Login failed: " + error.message);
-            }
-            });
-
+            login(email, password)});
         </script>
     </body>
 </html>

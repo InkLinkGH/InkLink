@@ -36,34 +36,61 @@ export async function signUp(email, password) {
 // Function to Log In
 export async function login(email, password) {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log("User signed in:", user.uid);
-      
-      // Check if user is valid before redirecting
-      if (user) {
-        window.location.href = "/test.html";  // Redirect after successful login
-      } else {
-        console.error("Login failed: User is undefined");
-        alert("Login failed: User is undefined");
-      }
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User signed in:", user.uid);
+        
+        // Check if user is valid before redirecting
+        if (user) {
+            window.location.href = "/test.html";  // Redirect after successful login
+        } else {
+            console.error("Login failed: User is undefined");
+            alert("Login failed: User is undefined");
+        }
     } catch (error) {
-      console.error("Login error:", error.message);
-      alert("Login failed: " + error.message);
+        // Handle different Firebase auth errors
+        let errorMessage;
+
+        switch (error.code) {
+            case 'auth/invalid-email':
+                errorMessage = "Login failed: Invalid email address.";
+                break;
+            case 'auth/user-disabled':
+                errorMessage = "Login failed: User account is disabled.";
+                break;
+            case 'auth/user-not-found':
+                errorMessage = "Login failed: No user found with this email address.";
+                break;
+            case 'auth/wrong-password':
+                errorMessage = "Login failed: Incorrect password.";
+                break;
+            default:
+                errorMessage = "Login failed: " + error.message;
+        }
+
+        console.error("Login error:", errorMessage);
+        alert(errorMessage);  // Display appropriate error message to the user
     }
-  }
+}
 
 // Function to Log Out
 export async function logout() {
-    signOut(auth)
-      .then(() => {
+    try {
+        await signOut(auth);
         console.log("User logged out");
-        window.location.href = "/index.html";
-      })
-      .catch(error => {
-        console.error("Logout error:", error);
-      });
-  }
+        window.location.href = "/index.html";  // Redirect after successful logout
+    } catch (error) {
+        // Handle case when no user is signed in
+        if (error.code === 'auth/no-current-user') {
+            console.log("No user is currently signed in.");
+            alert("You are not logged in.");
+        } else {
+            console.error("Logout error:", error.message);
+            alert("Logout failed: " + error.message);
+        }
+    }
+}
+
 
 // Function to Check if User is Logged In
 export async function checkAuth(callback) {

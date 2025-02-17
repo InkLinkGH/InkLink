@@ -26,7 +26,7 @@ const auth = getAuth(app);
 const database = getDatabase(app);
 const analytics = getAnalytics(app);
 // Function to Sign Up
-export function signUp(email, password) {
+export async function signUp(email, password) {
   auth.createUserWithEmailAndPassword(email, password)
     .then(userCredential => {
       console.log("User signed up:", userCredential.user.uid);
@@ -37,7 +37,7 @@ export function signUp(email, password) {
 }
 
 // Function to Log In
-export function login(email, password) {
+export async function login(email, password) {
   auth.signInWithEmailAndPassword(email, password)
     .then(userCredential => {
       console.log("User signed in:", userCredential.user.uid);
@@ -50,7 +50,7 @@ export function login(email, password) {
 }
 
 // Function to Log Out
-export function logout() {
+export async function logout() {
   auth.signOut()
     .then(() => {
       console.log("User logged out");
@@ -62,7 +62,7 @@ export function logout() {
 }
 
 // Function to Check if User is Logged In
-export function checkAuth(callback) {
+export async function checkAuth(callback) {
   auth.onAuthStateChanged(user => {
     callback(user);
   });

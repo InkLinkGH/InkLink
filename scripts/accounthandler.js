@@ -1,11 +1,10 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -20,69 +19,52 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-const db = getDatabase(app);
 
 console.log("Firebase initialized:", app);
 
-// Sign Up Function
-export async function signUp(email, password, username) {
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // Store additional user info in the database
-        await set(ref(db, `users/${user.uid}`), {
-            username: username,
-            email: email,
-            createdAt: new Date().toISOString()
-        });
-        
-        console.log("User signed up:", user.uid);
-        return user;
-    } catch (error) {
-        console.error("Signup error:", error.message);
-        throw error;
-    }
-}
-
-// Login Function
-export async function login(email, password) {
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        console.log("User logged in:", userCredential.user.uid);
-        return userCredential.user;
-    } catch (error) {
-        console.error("Login error:", error.message);
-        throw error;
-    }
-}
-
-// Logout function
-export function logout() {
-    signOut(auth).then(() => {
-        console.log("User logged out");
-        window.location.href = "/index.html"; // Redirect to the main page
-    }).catch((error) => {
-        console.error("Logout error:", error);
+const auth = firebase.auth();
+const database = firebase.database();
+const app = firebase.app();
+const analytics = firebase.analytics(app);
+// Function to Sign Up
+function signUp(email, password) {
+  auth.createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      console.log("User signed up:", userCredential.user.uid);
+    })
+    .catch(error => {
+      console.error("Signup error:", error.message);
     });
 }
 
-// Function to check if user is authenticated
-export function checkAuth(callback) {
-    onAuthStateChanged(auth, (user) => {
-        callback(user);
+// Function to Log In
+function login(email, password) {
+  auth.signInWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      console.log("User signed in:", userCredential.user.uid);
+      window.location.href = "/test.html";  // Redirect after login
+    })
+    .catch(error => {
+      console.error("Login error:", error.message);
+      alert("Login failed: " + error.message);
     });
 }
 
+// Function to Log Out
+function logout() {
+  auth.signOut()
+    .then(() => {
+      console.log("User logged out");
+      window.location.href = "/index.html";  // Redirect to login page
+    })
+    .catch(error => {
+      console.error("Logout error:", error);
+    });
+}
 
-// use this on sites we dont want users that arent logged in on
-// import { checkAuth } from './firebase-config.js';
-
-// checkAuth((user) => {
-//     if (!user) {
-//         window.location.href = "/index.html"; // Redirect to login if not logged in
-//     }
-// });
+// Function to Check if User is Logged In
+function checkAuth(callback) {
+  auth.onAuthStateChanged(user => {
+    callback(user);
+  });
+}

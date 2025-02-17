@@ -48,8 +48,16 @@ export async function login(email, password) {
         alert("Login failed: User is undefined");
       }
     } catch (error) {
-      console.error("Login error:", error.message);
-      alert("Login failed: " + error.message);
+        console.error("Login error:", error.message);
+
+        // Custom error handling
+        if (error.code === 'auth/wrong-password') {
+          alert("Login failed: Incorrect password");
+        } else if (error.code === 'auth/user-not-found') {
+          alert("Login failed: User not found");
+        } else {
+          alert("Login failed: " + error.message);
+        }
     }
   }
 

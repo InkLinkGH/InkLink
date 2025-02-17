@@ -35,15 +35,22 @@ export async function signUp(email, password) {
 
 // Function to Log In
 export async function login(email, password) {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        console.log("User signed in:", userCredential.user.uid);
-        window.location.href = "/test.html"; 
-      })
-      .catch(error => {
-        console.error("Login error:", error.message);
-        alert("Login failed: " + error.message);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("User signed in:", user.uid);
+      
+      // Check if user is valid before redirecting
+      if (user) {
+        window.location.href = "/test.html";  // Redirect after successful login
+      } else {
+        console.error("Login failed: User is undefined");
+        alert("Login failed: User is undefined");
+      }
+    } catch (error) {
+      console.error("Login error:", error.message);
+      alert("Login failed: " + error.message);
+    }
   }
 
 // Function to Log Out
@@ -59,8 +66,8 @@ export async function logout() {
   }
 
 // Function to Check if User is Logged In
-export async function checkAuth(callback) {
-    onAuthStateChanged(auth, user => {
-      callback(user);
-    });
-  }
+checkAuth((user) => {
+    if (user) {
+      window.location.href = "/test.html";  // Redirect if already authenticated
+    }
+  });

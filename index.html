@@ -67,23 +67,20 @@
             });
         
             document.getElementById("loginform").addEventListener("submit", async (event) => {
-                event.preventDefault(); // Prevent form from refreshing the page
-        
-                // Get email and password from the form
-                const email = document.getElementById("email").value;
-                const password = document.getElementById("password").value;
-        
-                try {
-                    const user = await login(email, password);
-                    console.log("User logged in:", user.uid);
-        
-                    // Redirect to the dashboard
-                    window.location.href = "/test.html"; 
-                } catch (error) {
-                    console.error("Login failed:", error.message);
-                    alert("Login failed: " + error.message);
-                }
+            event.preventDefault(); // Prevent form from refreshing the page
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Attempt to log in
+            try {
+                await login(email, password); // Ensure login returns a successful response
+            } catch (error) {
+                console.error("Login failed:", error.message);
+                alert("Login failed: " + error.message);
+            }
             });
+
         </script>
     </body>
 </html>

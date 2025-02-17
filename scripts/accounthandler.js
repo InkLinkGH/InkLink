@@ -64,6 +64,9 @@ export async function login(email, password) {
             case 'auth/wrong-password':
                 errorMessage = "Login failed: Incorrect password.";
                 break;
+            case 'auth/invalid-login-credentials':  // Handling this specific error code
+                errorMessage = "Login failed: Invalid login credentials.";
+                break;
             default:
                 errorMessage = "Login failed: " + error.message;
         }

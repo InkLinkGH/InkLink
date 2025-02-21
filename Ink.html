@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="ink.css" />
+    <title>Ludiflex | Login, Registration & Password Reset</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="nav">
+        <div class="nav-InkLink">
+          <p>Ink.Link</p>
+        </div>
+        <div class="nav-menu" id="navMenu">
+          <ul>
+            <li><a href="#" class="link active">Home</a></li>
+            <li><a href="#" class="link">Blog</a></li>
+            <li><a href="#" class="link">Services</a></li>
+            <li><a href="#" class="link">About</a></li>
+          </ul>
+        </div>
+        <div class="nav-button">
+          <button class="btn white-btn" id="loginBtn" onclick="showLogin()">
+            Sign In
+          </button>
+          <button class="btn" id="registerBtn" onclick="showRegister()">
+            Sign Up
+          </button>
+        </div>
+        <div class="nav-menu-btn">
+          <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+        </div>
+      </nav>
+      <!----------------------------- Form box ----------------------------------->
+      <div class="form-box">
+        <!------------------- login form --------------------------->
+        <div class="login-container" id="login">
+          <div class="top">
+            <span>
+              Don't have an account?
+              <a href="#" onclick="showRegister()">Sign Up</a>
+            </span>
+            <header>Login</header>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              class="input-field"
+              placeholder="Username or Email"
+            />
+            <i class="bx bx-user"></i>
+          </div>
+          <div class="input-box">
+            <input type="password" class="input-field" placeholder="Password" />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input type="submit" class="submit" value="Sign In" />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="login-check" />
+              <label for="login-check"> Remember Me</label>
+            </div>
+            <div class="two">
+              <!-- Updated the forgot password link to trigger our new function -->
+              <label><a href="#" onclick="showForgot()">Forgot password?</a></label>
+            </div>
+          </div>
+        </div>
+        <!------------------- registration form --------------------------->
+        <div class="register-container" id="register">
+          <div class="top">
+            <span>
+              Have an account? 
+              <a href="#" onclick="showLogin()">Login</a>
+            </span>
+            <header>Sign Up</header>
+          </div>
+          <div class="two-forms">
+            <div class="input-box">
+              <input type="text" class="input-field" placeholder="Firstname" />
+              <i class="bx bx-user"></i>
+            </div>
+            <div class="input-box">
+              <input type="text" class="input-field" placeholder="Lastname" />
+              <i class="bx bx-user"></i>
+            </div>
+          </div>
+          <div class="input-box">
+            <input type="text" class="input-field" placeholder="Email" />
+            <i class="bx bx-envelope"></i>
+          </div>
+          <div class="input-box">
+            <input type="password" class="input-field" placeholder="Password" />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input type="submit" class="submit" value="Register" />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="register-check" />
+              <label for="register-check"> Remember Me</label>
+            </div>
+            <div class="two">
+              <label><a href="#">Terms & conditions</a></label>
+            </div>
+          </div>
+        </div>
+        <!------------------- forgot password form --------------------------->
+        <div class="forgot-container" id="forgot">
+          <div class="top">
+            <span>
+              Remember your password? 
+              <a href="#" onclick="showLogin()">Login</a>
+            </span>
+            <header>Reset Password</header>
+          </div>
+          <div class="input-box">
+            <input type="text" class="input-field" placeholder="Enter your email" />
+            <i class="bx bx-envelope"></i>
+          </div>
+          <div class="input-box">
+            <input type="submit" class="submit" value="Reset Password" />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <label><a href="#" onclick="showLogin()">Back to Login</a></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Toggle navigation menu for mobile
+      function myMenuFunction() {
+        var i = document.getElementById("navMenu");
+        if (i.className === "nav-menu") {
+          i.className += " responsive";
+        } else {
+          i.className = "nav-menu";
+        }
+      }
+
+      // Get container elements
+      var loginContainer = document.getElementById("login");
+      var registerContainer = document.getElementById("register");
+      var forgotContainer = document.getElementById("forgot");
+      var loginBtn = document.getElementById("loginBtn");
+      var registerBtn = document.getElementById("registerBtn");
+
+      // Show Login form and hide others
+      function showLogin() {
+        loginContainer.style.left = "4px";
+        loginContainer.style.opacity = 1;
+        registerContainer.style.left = "-520px";
+        registerContainer.style.opacity = 0;
+        forgotContainer.style.left = "-520px";
+        forgotContainer.style.opacity = 0;
+        loginBtn.className = "btn white-btn";
+        registerBtn.className = "btn";
+      }
+
+      // Show Register form and hide others
+      function showRegister() {
+        loginContainer.style.left = "-520px";
+        loginContainer.style.opacity = 0;
+        registerContainer.style.left = "5px";
+        registerContainer.style.opacity = 1;
+        forgotContainer.style.left = "-520px";
+        forgotContainer.style.opacity = 0;
+        loginBtn.className = "btn";
+        registerBtn.className = "btn white-btn";
+      }
+
+      // Show Forgot Password form and hide others
+      function showForgot() {
+        loginContainer.style.left = "-520px";
+        loginContainer.style.opacity = 0;
+        registerContainer.style.left = "-520px";
+        registerContainer.style.opacity = 0;
+        // Position forgot container in view
+        forgotContainer.style.left = "4px";
+        forgotContainer.style.opacity = 1;
+        // Optionally, you can also reset button classes if needed
+        loginBtn.className = "btn";
+        registerBtn.className = "btn";
+      }
+
+      // Set initial view to login form
+      showLogin();
+    </script>
+  </body>
+</html>
